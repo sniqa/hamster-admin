@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  account  String   @unique
+  username String?  @default("")
+  password String?
+  avatar   String?  @default("")
+  remark   String   @default("")
+  updateAt DateTime @updatedAt
+  createAt DateTime @default(now())
+}
+
+model Network {
+  id       Int      @id @default(autoincrement())
+  type     String   @unique
+  ipStart  String   @default("")
+  ipEnd    String   @default("")
+  gateway  String   @default("")
+  netmask  String   @default("")
+  vlan     String   @default("")
+  remark   String   @default("")
+  updateAt DateTime @updatedAt
+  createAt DateTime @default(now())
+
+  // tree node
+  parentId Int?
+  children Network[] @relation("TreeNodeToTreeNode")
+  parent   Network?  @relation("TreeNodeToTreeNode", fields: [parentId], references: [id])
+
+  ipAddress IpAddress[]
+
+  devices Device[]
+}
+
+model IpAddress {
+  id Int    @id @default(autoincrement())
+  ip String
+
+  remark   String   @default("")
+  updateAt DateTime @updatedAt
+  createAt DateTime @default(now())
+
+  network   Network? @relation(fields: [networkId], references: [id])
+  networkId Int?
+
+  devices Device[]
+}
+
+model Device {
+  id           Int     @id @default(autoincrement())
+  name         String? @default("")
+  serialNumber String  @unique
+  usage        String? @default("")
+  location     String? @default("")
+  remark       String  @default("")
+
+  updateAt DateTime @updatedAt
+  createAt DateTime @default(now())
+
+  deviceModel   DeviceModel? @relation(fields: [deviceModelId], references: [id])
+  deviceModelId Int?
+
+  network   Network? @relation(fields: [networkId], references: [id])
+  networkId Int?
+
+  ipAddress   IpAddress? @relation(fields: [ipAddressId], references: [id])
+  ipAddressId Int?
+
+  history History[]
+}
+
+model DeviceModel {
+  id              Int       @id @default(autoincrement())
+  model           String    @unique
+  manufactureDate DateTime?
+  manufacturer    String    @default("")
+  shelfLife       DateTime?
+  remark          String    @default("")
+  updateAt        DateTime  @updatedAt
+  createAt        DateTime  @default(now())
+
+  devices Device[]
+}
+
+model History {
+  id       Int      @id @default(autoincrement())
+  data     String
+  createAt DateTime @default(now())
+
+  device   Device? @relation(fields: [deviceId], references: [id])
+  deviceId Int?
+}
