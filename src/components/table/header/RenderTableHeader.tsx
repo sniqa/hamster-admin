@@ -37,9 +37,6 @@ export const RenderTableHeader = <TData extends RowData>({
   header,
   table,
 }: RenderTableHeaderProps<TData>) => {
-  console.log(header.column.columnDef.enableResizing);
-  console.log(table.options.enableResizing);
-
   const enableResizing =
     header.column.columnDef.enableResizing === undefined
       ? table.options.enableResizing

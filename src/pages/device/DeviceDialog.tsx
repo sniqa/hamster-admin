@@ -17,20 +17,38 @@ import FormSelect from "@/components/form-select";
 import LoadingButton from "@/components/loading-button";
 import RequireMark from "@/components/require-mark";
 
-const DeviceDialog = (props: DialogProps) => {
+export type DeviceDialogProps = {
+  onClose: () => void;
+  onSubmit: () => void;
+  networkData: [];
+  ipAddressData: [];
+  deviceModelData: [];
+  defaultValue: any;
+} & DialogProps;
+
+const DeviceDialog = ({
+  onClose,
+  onSubmit,
+  networkData,
+  ipAddressData,
+  deviceModelData,
+  defaultValue,
+  ...props
+}: DeviceDialogProps) => {
   const form = useForm({
-    defaultValues: {
-      name: "",
-      serialNumber: "",
-      usage: "",
-      location: "",
-      network: null,
-      ip: null,
-    },
+    // defaultValues: {
+    //   name: "",
+    //   serialNumber: "",
+    //   usage: "",
+    //   location: "",
+    //   networkId: null,
+    //   ipAddressId: null,
+    //   deviceModelId: null,
+    // },
   });
 
   const handleOnSubmit = (values) => {
-    console.log(values);
+    onSubmit(values);
   };
 
   return (
@@ -79,8 +97,8 @@ const DeviceDialog = (props: DialogProps) => {
               <FormSelect
                 label={CONSTANT.NETWORK_NAME}
                 control={form.control}
-                name="network"
-                data={[{ value: "1", label: "1" }]}
+                name="networkId"
+                data={networkData}
                 className="w-full"
               />
 
@@ -88,17 +106,18 @@ const DeviceDialog = (props: DialogProps) => {
               <FormSelect
                 label={CONSTANT.IP_ADDRESS}
                 control={form.control}
-                name="ip"
-                data={[{ value: "1", label: "1" }]}
+                name="ipAddressId"
+                data={ipAddressData}
                 className="w-full"
+                onReset={() => form.resetField("ipAddressId")}
               />
 
               {/* ip */}
               <FormSelect
                 label={CONSTANT.DEVICE_MODEL}
                 control={form.control}
-                name="ip"
-                data={[{ value: "1", label: "1" }]}
+                name="deviceModelId"
+                data={deviceModelData}
                 className="w-full"
               />
             </div>
@@ -106,7 +125,7 @@ const DeviceDialog = (props: DialogProps) => {
             <div className="flex justify-end w-full gap-4">
               <Button
                 variant={"outline"}
-                onClick={props.onOpenChange}
+                onClick={onClose}
                 className="cursor-pointer"
               >
                 Cancel

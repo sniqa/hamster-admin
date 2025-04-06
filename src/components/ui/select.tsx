@@ -1,6 +1,11 @@
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CircleXIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -22,31 +27,96 @@ function SelectValue({
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
-function SelectTrigger({
+// function SelectTrigger({
+//   className,
+//   size = "default",
+//   children,
+//   onReset,
+//   ...props
+// }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+//   size?: "sm" | "default";
+//   onReset?: () => void;
+// }) {
+
+//   return (
+//     <div
+//       className={cn(
+//         "relative z-0 flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+//         className
+//       )}
+//     >
+//       <SelectPrimitive.Trigger
+//         data-slot="select-trigger"
+//         data-size={size}
+//         className={cn(
+//           "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+//           className
+//         )}
+//         {...props}
+//       >
+//         {children}
+//         <SelectPrimitive.Icon
+//           asChild
+//           className={cn(
+//             `absolute right-2 cursor-pointer`,
+//             !props.value && "pointer-events-none"
+//           )}
+//         >
+//           {props.value ? (
+//             <CircleXIcon className="h-4 w-4 opacity-50" onClick={onReset} />
+//           ) : (
+//             <ChevronDownIcon className="h-4 w-4 opacity-50 " />
+//           )}
+//         </SelectPrimitive.Icon>
+//       </SelectPrimitive.Trigger>
+//     </div>
+//   );
+// }
+
+const SelectTrigger = ({
   className,
-  size = "default",
   children,
+  onReset,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default";
-}) {
+  onReset?: () => void;
+}) => {
   return (
-    <SelectPrimitive.Trigger
-      data-slot="select-trigger"
-      data-size={size}
+    <div
       className={cn(
-        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative z-0 flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
         className
       )}
-      {...props}
     >
-      {children}
-      <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+      <SelectPrimitive.Trigger
+        className={cn("w-full text-left pl-3 pr-10 py-2 truncate")}
+        {...props}
+      >
+        <span
+          className={cn(
+            `w-full pr-2 truncate`,
+            !props.value && "text-neutral-400"
+          )}
+        >
+          {children}
+        </span>
+      </SelectPrimitive.Trigger>
+      <SelectPrimitive.Icon
+        className={cn(
+          `absolute right-2 cursor-pointer`,
+          !props.value && "pointer-events-none"
+        )}
+      >
+        {props.value ? (
+          <CircleXIcon className="h-4 w-4 opacity-50" onClick={onReset} />
+        ) : (
+          <ChevronDownIcon className="h-4 w-4 opacity-50 " />
+        )}
       </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
+    </div>
   );
-}
+};
 
 function SelectContent({
   className,

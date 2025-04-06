@@ -9,7 +9,7 @@ const DevicePage = () => {
   return (
     <div>
       <DeviceTable onCreate={onOpenChange} />
-      <DeviceDialog open={open} onOpenChange={onOpenChange} />
+      <DeviceDialog open={open} onClose={onOpenChange} />
     </div>
   );
 };

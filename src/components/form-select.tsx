@@ -17,14 +17,19 @@ import {
 import { CONSTANT } from "@/lib/constant";
 import { SelectGroup } from "@radix-ui/react-select";
 import { Button } from "./ui/button";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 import DebouncedInput from "./debounced-input";
 
 export type SelectItemData = {
-  label: React.ReactNode;
+  label: string;
   value: string | number | null;
 };
 
@@ -37,7 +42,11 @@ export type FormInputProps<
   description?: React.ReactNode;
   className?: string;
   data: SelectItemData[];
+  onCreate?: () => void;
+  onReset?: () => void;
 } & Omit<ControllerProps<TFieldValues, TName>, "render">;
+
+// const isHave = (origin: string | number, target: unknown) => {};
 
 const FormInput = <
   TFieldValues extends FieldValues = FieldValues,
@@ -48,9 +57,11 @@ const FormInput = <
   description,
   className,
   data,
+  onCreate,
+  onReset,
   ...props
 }: FormInputProps<TFieldValues, TName>) => {
-  const [state, setState] = useState("");
+  const [state, setState] = useState<string>("");
 
   return (
     <FormField
@@ -60,32 +71,51 @@ const FormInput = <
           {label && <FormLabel>{label}</FormLabel>}
           <Select onValueChange={field.onChange} value={String(field.value)}>
             <FormControl className={className}>
-              <SelectTrigger>
+              <SelectTrigger value={field.value} onReset={onReset}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectGroup>
-                <div className="flex items-center mb-1 gap-1 border-1 rounded-md">
+              <SelectGroup className="border-b">
+                <div className="flex items-center gap-1">
+                  {/* search */}
                   <DebouncedInput
                     value={state}
-                    onChange={(v) => setState(v)}
+                    onChange={(v) => setState(String(v))}
                     className="border-0 h-8"
+                    placeholder="Search..."
                   />
-                  <Button variant={"ghost"} size={"icon"} className="size-8">
-                    <PlusIcon />
-                  </Button>
+
+                  {/* create new select */}
+                  {onCreate && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant={"ghost"}
+                            size={"icon"}
+                            className="size-8 cursor-pointer"
+                            onClick={onCreate}
+                          >
+                            <PlusIcon />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>{CONSTANT.CREATE}</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
                 </div>
               </SelectGroup>
               {data.map(
-                (d) =>
-                  d && (
+                (item) =>
+                  item &&
+                  item.label?.includes(state) && (
                     <SelectItem
-                      key={d.value}
-                      value={String(d.value)}
+                      key={item.value}
+                      value={String(item.value)}
                       className="h-8"
                     >
-                      {d.label ? d.label : CONSTANT.EMPTY}
+                      {item.label ? item.label : CONSTANT.EMPTY}
                     </SelectItem>
                   )
               )}
