@@ -1,4 +1,5 @@
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { flexRender, RowData, Table } from "@tanstack/react-table";
 
 type ShadcnReactTableBodyProps<TData extends RowData> = {
@@ -8,6 +9,8 @@ type ShadcnReactTableBodyProps<TData extends RowData> = {
 const ShadcnReactTableBody = <TData extends RowData>({
   table,
 }: ShadcnReactTableBodyProps<TData>) => {
+  const { density } = table.getState();
+
   return (
     <TableBody>
       {table.getRowModel().rows.map((row) => (
@@ -16,6 +19,10 @@ const ShadcnReactTableBody = <TData extends RowData>({
             return (
               <TableCell
                 key={cell.id}
+                className={cn(
+                  density === "sm" ? "p-1" : density === "md" ? "p-2" : "p-3",
+                  "transition-all"
+                )}
                 style={{
                   width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
                 }}

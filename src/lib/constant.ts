@@ -48,4 +48,9 @@ export const CONSTANT = {
   SERIAL_NUMBER: "序列号",
   USAGE: "用途",
   DEVICE_MODEL: "设备型号",
+  MANUFACTURE_DATA: "出厂日期",
+  MANUFACTURER: "厂商",
+  SHELFLIFE: "保质期",
+  CATEGORY: "分类",
+  CANCEL: "取消",
 };

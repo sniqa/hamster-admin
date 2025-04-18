@@ -4,4 +4,5 @@ export const CONSTANT = {
   SHOW_HIDE_VIEW_OPTIONS: "显示/隐藏列",
   SHOW_HIDE_COLUMN_FILTERS: "显示/隐藏列过滤器",
   SHOW_HIDE_GLOBAL_FILTER: "显示/隐藏全局过滤器",
+  EMPTY: "EMPTY",
 };

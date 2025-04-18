@@ -6,9 +6,14 @@ export type LoadingButtonProps = {
   loading?: boolean;
 } & ButtonProps;
 
-const LoadingButton = ({ loading, children, ...props }: LoadingButtonProps) => {
+const LoadingButton = ({
+  loading,
+  children,
+  type = "submit",
+  ...props
+}: LoadingButtonProps) => {
   return (
-    <Button disabled={loading} {...props}>
+    <Button disabled={loading} type={type} {...props}>
       {loading ? (
         <>
           <Loader2 className="animate-spin" />

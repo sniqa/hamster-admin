@@ -3,6 +3,12 @@ import { z } from "zod";
 import { ERROR } from "@/server/utils/error";
 import ip from "ip";
 import { IdInfo, IdSchema } from "./validate";
+import {
+  CreateNetworkInfo,
+  CreateNetworkSchema,
+  UpdateNetworkInfo,
+  UpdateNetworkSchema,
+} from "@/types/network";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const IpSchema = z.string().ip();
@@ -29,27 +35,16 @@ const generateIpRange = (ipStart?: Ip, ipEnd?: Ip) => {
 };
 
 // create network
-const CreateNetworkSchema = z.object({
-  type: z.string().min(1, { message: "" }),
-  parentId: z.number().or(z.null()).optional(),
-  ipStart: z.string().ip().optional(),
-  ipEnd: z.string().ip().optional(),
-  gateway: z.string().optional(),
-  netmask: z.string().optional(),
-  vlan: z.string().optional(),
-  remark: z.string().optional(),
-});
-
-type CreateNetworkInfo = z.infer<typeof CreateNetworkSchema>;
-
 export const create_network = async (data: CreateNetworkInfo) => {
+  console.log(data);
+
   const { success, error } = CreateNetworkSchema.safeParse(data);
 
   if (!success) {
     throw new Error(ERROR.INVALID_ARGUMENTS(error));
   }
 
-  if (await prisma.network.findUnique({ where: { type: data.type } })) {
+  if (await prisma.network.findUnique({ where: { name: data.name } })) {
     throw new Error(ERROR.ALREADY_HAVE_THIS_NETWORK);
   }
 
@@ -66,8 +61,9 @@ export const create_network = async (data: CreateNetworkInfo) => {
 };
 
 // find network tree
+
 export const find_network_tree = async () => {
-  return prisma.network.findMany({
+  return await prisma.network.findMany({
     where: {
       parentId: null,
     },
@@ -110,20 +106,19 @@ export const find_network = async () => {
   });
 };
 
-// update network
-const UpdateNetworkSchema = z.object({
-  id: z.number(),
-  type: z.string().optional(),
-  parentId: z.number().or(z.null()).optional(),
-  ipStart: z.string().ip().optional(),
-  ipEnd: z.string().ip().optional(),
-  gateway: z.string().optional(),
-  netmask: z.string().optional(),
-  vlan: z.string().optional(),
-  remark: z.string().optional(),
-});
+export const find_network_select = async () => {
+  const result = await prisma.network.findMany({
+    include: { ipAddress: true },
+  });
 
-type UpdateNetworkInfo = z.infer<typeof UpdateNetworkSchema>;
+  return result.map((item) => ({
+    label: item.name,
+    value: item.id,
+    ips: item.ipAddress.map((ip) => ({ label: ip.ip, value: ip.id })),
+  }));
+};
+
+// update network
 
 export const update_network = async (data: UpdateNetworkInfo) => {
   const { success, error } = UpdateNetworkSchema.safeParse(data);
@@ -141,5 +136,18 @@ export const update_network = async (data: UpdateNetworkInfo) => {
   return await prisma.network.update({
     where: { id },
     data: rest,
+  });
+};
+
+export const find_ip_address_by_network_id = async (data: IdInfo) => {
+  const { success, error } = IdSchema.safeParse(data);
+
+  if (!success) {
+    throw new Error(ERROR.INVALID_ARGUMENTS(error));
+  }
+
+  return await prisma.ipAddress.findMany({
+    where: { networkId: data.id },
+    include: { network: true, devices: true },
   });
 };

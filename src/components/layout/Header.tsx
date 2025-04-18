@@ -5,7 +5,7 @@ const Header = () => {
   const offset = useScrollTop();
   return (
     <header
-      className={`h-16 flex items-center px-2 justify-between ${
+      className={`h-16 flex items-center px-2 justify-between box-border ${
         offset > 10 ? "sticky top-0 z-40 shadow" : ""
       }`}
     >

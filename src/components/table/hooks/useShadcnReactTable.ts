@@ -18,16 +18,22 @@ import { useColumnsHeader } from "./useColumnsHeader";
 export const useShadcnReactTable = <TData extends RowData>(
   options: ShadncnReactTableOptions<TData>
 ) => {
-  const { data, columns, enableSelectRows, renderRowActions, ...rest } =
-    useShadcnReactTableOptions(options);
+  const {
+    data,
+    columns,
+    enableSelectRows,
+    renderRowActions,
+    enableShowOnly,
+    ...rest
+  } = useShadcnReactTableOptions(options);
 
   const [globalFilter, setGlobalFilter] = useState("");
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const newColumns = useColumnsHeader(columns, {
-    enableSelectRows: true,
-    renderRowActions,
+    enableSelectRows,
+    renderRowActions: !enableShowOnly ? renderRowActions : undefined,
   });
 
   const table = useReactTable({
@@ -36,6 +42,7 @@ export const useShadcnReactTable = <TData extends RowData>(
     columns: newColumns,
     ...rest,
     enableSelectRows,
+    enableShowOnly,
     state: {
       columnFilters,
       globalFilter,

@@ -8,12 +8,17 @@ const MainLayout = () => {
   return (
     <SidebarProvider>
       <NavSidebar />
-      <main className="w-full h-full">
+      <main className="w-full h-full flex flex-col">
         <Header />
 
-        <Suspense>
-          <Outlet />
-        </Suspense>
+        <div
+          style={{ height: "calc(100vh - 4rem)" }}
+          className="overflow-auto w-full box-border"
+        >
+          <Suspense>
+            <Outlet />
+          </Suspense>
+        </div>
       </main>
     </SidebarProvider>
   );

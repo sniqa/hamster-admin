@@ -41,9 +41,10 @@ export type FormInputProps<
   placeholder?: string;
   description?: React.ReactNode;
   className?: string;
-  data: SelectItemData[];
+  data: Array<SelectItemData>;
   onCreate?: () => void;
   onReset?: () => void;
+  valueAsNumber?: boolean;
 } & Omit<ControllerProps<TFieldValues, TName>, "render">;
 
 // const isHave = (origin: string | number, target: unknown) => {};
@@ -59,6 +60,7 @@ const FormInput = <
   data,
   onCreate,
   onReset,
+  valueAsNumber = false,
   ...props
 }: FormInputProps<TFieldValues, TName>) => {
   const [state, setState] = useState<string>("");
@@ -69,9 +71,16 @@ const FormInput = <
       render={({ field }) => (
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
-          <Select onValueChange={field.onChange} value={String(field.value)}>
+          <Select
+            onValueChange={
+              valueAsNumber
+                ? (val) => field.onChange(Number(val))
+                : field.onChange
+            }
+            value={String(field.value)}
+          >
             <FormControl className={className}>
-              <SelectTrigger value={field.value} onReset={onReset}>
+              <SelectTrigger onReset={onReset}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
@@ -106,19 +115,20 @@ const FormInput = <
                   )}
                 </div>
               </SelectGroup>
-              {data.map(
-                (item) =>
-                  item &&
-                  item.label?.includes(state) && (
-                    <SelectItem
-                      key={item.value}
-                      value={String(item.value)}
-                      className="h-8"
-                    >
-                      {item.label ? item.label : CONSTANT.EMPTY}
-                    </SelectItem>
-                  )
-              )}
+              {data &&
+                data.map(
+                  (item) =>
+                    item &&
+                    item.label?.includes(state) && (
+                      <SelectItem
+                        key={item.value}
+                        value={String(item.value)}
+                        className="h-8"
+                      >
+                        {item.label ? item.label : CONSTANT.EMPTY}
+                      </SelectItem>
+                    )
+                )}
             </SelectContent>
           </Select>
           {description && <FormDescription>{description}</FormDescription>}

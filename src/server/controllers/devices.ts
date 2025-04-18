@@ -1,22 +1,14 @@
 import { prisma } from "@/server/db";
-import { z } from "zod";
 import { ERROR } from "@/server/utils/error";
 import { IdInfo, IdSchema } from "./validate";
+import {
+  CreateDeviceInfo,
+  CreateDeviceSchema,
+  UpdateDeviceInfo,
+  UpdateDeviceSchema,
+} from "@/types/device";
 
 // create
-const CreateDeviceSchema = z.object({
-  name: z.string().optional(),
-  serialNumber: z.string().min(1, { message: "" }),
-  usage: z.string().optional(),
-  location: z.string().optional(),
-  remark: z.string().optional(),
-  deviceModelId: z.number().or(z.null()).optional(),
-  networkId: z.number().or(z.null()).optional(),
-  ipAddressId: z.number().or(z.null()).optional(),
-});
-
-type CreateDeviceInfo = z.infer<typeof CreateDeviceSchema>;
-
 export const create_device = async (data: CreateDeviceInfo) => {
   const { success, error } = CreateDeviceSchema.safeParse(data);
 
@@ -45,9 +37,9 @@ export const find_device = async () => {
   return await prisma.device.findMany({
     include: {
       deviceModel: { select: { model: true } },
-      ipAddress: { select: { ip: true, network: { select: { type: true } } } },
+      ipAddress: { select: { ip: true, network: { select: { name: true } } } },
       network: {
-        select: { type: true },
+        select: { name: true },
       },
       history: true,
     },
@@ -55,16 +47,21 @@ export const find_device = async () => {
 };
 
 // find device history
-export const find_device_history = async (data: IdInfo) => {
+export const find_device_history_by_id = async (data: IdInfo) => {
   const { success, error } = IdSchema.safeParse(data);
 
   if (!success) {
     throw new Error(ERROR.INVALID_ARGUMENTS(error));
   }
 
-  return await prisma.history.findMany({
+  const result = await prisma.history.findMany({
     where: { deviceId: data.id },
   });
+
+  return result.map((res) => ({
+    ...JSON.parse(res.data),
+    createAt: res.createAt,
+  }));
 };
 
 // delete device by id
@@ -85,19 +82,7 @@ export const delete_device_by_id = async (data: IdInfo) => {
 };
 
 // update device
-const UpdateDeviceSchema = z.object({
-  id: z.number(),
-  name: z.string().optional(),
-  serialNumber: z.string().optional(),
-  usage: z.string().optional(),
-  location: z.string().optional(),
-  remark: z.string().optional(),
-  deviceModelId: z.number().or(z.null()).optional(),
-  networkId: z.number().or(z.null()).optional(),
-  ipAddressId: z.number().or(z.null()).optional(),
-});
 
-type UpdateDeviceInfo = z.infer<typeof UpdateDeviceSchema>;
 export const update_device = async (data: UpdateDeviceInfo) => {
   const { success, error } = UpdateDeviceSchema.safeParse(data);
 
@@ -113,8 +98,6 @@ export const update_device = async (data: UpdateDeviceInfo) => {
       ipAddress: true,
     },
   });
-
-  console.log(oldDeviceInfo);
 
   if (!oldDeviceInfo) {
     throw new Error(ERROR.DOES_NOT_EXIST(data.id.toString()));

@@ -2,18 +2,15 @@ import { prisma } from "@/server/db";
 import { z } from "zod";
 import { ERROR } from "@/server/utils/error";
 import { IdInfo, IdSchema } from "./validate";
+import {
+  CreateDeviceModelInfo,
+  CreateDeviceModelSchema,
+} from "@/types/deviceModel";
 
 // create device model
-const CreateDeviceModelSchema = z.object({
-  model: z.string(),
-  manufacturer: z.string().optional(),
-  manufactureDate: z.string().date().optional(),
-  shelfLife: z.string().date().optional(),
-  remark: z.string().optional(),
-});
-type CreateDeviceModelInfo = z.infer<typeof CreateDeviceModelSchema>;
-
 export const create_device_model = async (data: CreateDeviceModelInfo) => {
+  console.log(data);
+
   const { success, error } = CreateDeviceModelSchema.safeParse(data);
 
   if (!success) {
@@ -21,7 +18,7 @@ export const create_device_model = async (data: CreateDeviceModelInfo) => {
   }
 
   if (await prisma.deviceModel.findUnique({ where: { model: data.model } })) {
-    throw new Error(ERROR.ALREADY_HAVE_THIS_NETWORK);
+    throw new Error(ERROR.ALREADY_HAVE_THIS_DEVICE_MODEL);
   }
 
   const newDeviceModel = await prisma.deviceModel.create({
@@ -34,6 +31,12 @@ export const create_device_model = async (data: CreateDeviceModelInfo) => {
 //find device model
 export const find_device_model = async () => {
   return await prisma.deviceModel.findMany();
+};
+
+export const find_device_model_select = async () => {
+  const result = await prisma.deviceModel.findMany();
+
+  return result.map((item) => ({ value: item.id, label: item.model }));
 };
 
 //delete device model

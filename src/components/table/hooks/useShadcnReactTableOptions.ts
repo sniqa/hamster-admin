@@ -7,17 +7,21 @@ const EMPTY_ARRAY: any = [];
 export const useShadcnReactTableOptions = <TData extends RowData>({
   data,
   columns,
-  enableColumnFilters = true,
+  enableColumnFilters = false,
   enableDensity = true,
   enableFullScreen = true,
   enableGlobalFilter = true,
   enableViewOptions = true,
   enableSelectRows = true,
   enableResizing = true,
+  enableShowOnly = false,
+  loading = false,
   ...rest
 }: ShadncnReactTableOptions<TData>) => {
-  if (data.length <= 0) data = EMPTY_ARRAY;
-  if (columns.length <= 0) columns = EMPTY_ARRAY;
+  if (!Array.isArray(data)) data = EMPTY_ARRAY;
+  else if (data.length <= 0) data = EMPTY_ARRAY;
+  if (!Array.isArray(columns)) data = EMPTY_ARRAY;
+  else if (columns.length <= 0) columns = EMPTY_ARRAY;
 
   return {
     data,
@@ -29,6 +33,8 @@ export const useShadcnReactTableOptions = <TData extends RowData>({
     enableViewOptions,
     enableSelectRows,
     enableResizing,
+    enableShowOnly,
+    loading,
     ...rest,
   };
 };

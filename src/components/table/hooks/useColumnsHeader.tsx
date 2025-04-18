@@ -54,5 +54,5 @@ export const useColumnsHeader = <TData extends RowData>(
       newColumns = [...newColumns, rowActionsColumn(renderRowActions)];
 
     return newColumns;
-  }, [enableSelectRows, rowActionsColumn]);
+  }, [columns, enableSelectRows, renderRowActions]);
 };

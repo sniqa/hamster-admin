@@ -3,6 +3,7 @@ import UserPage from "./pages/user/UserPage";
 import DevicePage from "./pages/device/DevicePage";
 import Table from "./pages/Table";
 import MainLayout from "./components/layout/MainLayout";
+import NetworkPage from "./pages/network/NetworkPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         element: <UserPage />,
       },
       { path: "/device", element: <DevicePage /> },
+      { path: "/network", element: <NetworkPage /> },
     ],
   },
   { path: "/table", element: <Table /> },

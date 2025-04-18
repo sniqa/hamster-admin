@@ -28,6 +28,8 @@ export type ShadncnReactTableOptions<TData extends RowData> = {
   enableViewOptions?: boolean;
   enableSelectRows?: boolean;
   enableResizing?: boolean;
+  enableShowOnly?: boolean;
+  loading?: boolean;
   renderRowActions?: (cell: CellContext<TData, unknown>) => ReactNode;
   renderToolbarCustomActions?: (table: Table<TData>) => ReactNode;
 } & DensityOptions &

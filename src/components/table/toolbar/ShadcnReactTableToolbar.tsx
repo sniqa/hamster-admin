@@ -14,7 +14,8 @@ const ShadcnReactTableToolbar = <TData extends RowData>({
   return (
     <div className=" flex items-center justify-between h-9 box-border ">
       <div className="">
-        {table.options.renderToolbarCustomActions &&
+        {!table.options.enableShowOnly &&
+          table.options.renderToolbarCustomActions &&
           table.options.renderToolbarCustomActions(table)}
       </div>
 

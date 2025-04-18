@@ -32,8 +32,8 @@ const items = [
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "#",
+    title: "Network",
+    url: "/network",
     icon: Search,
   },
   {
