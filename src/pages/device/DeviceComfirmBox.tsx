@@ -11,6 +11,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { delete_device_by_id } from "@/apis/device";
 import { useDeviceContext } from "./context";
+import { CONSTANT } from "@/lib/constant";
 
 const DeviceComfirmBox = () => {
   const { open, setOpen, currentRow } = useDeviceContext();
@@ -29,17 +30,23 @@ const DeviceComfirmBox = () => {
     <AlertDialog open={open === "delete"} onOpenChange={() => setOpen(null)}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{CONSTANT.COMFIRM_OPERATE}</AlertDialogTitle>
           <AlertDialogDescription>
-            {`DELETE ${currentRow?.serialNumber}`}
+            {`${CONSTANT.DELETE}${CONSTANT.DEVICE}(${CONSTANT.SERIAL_NUMBER}): ${currentRow?.serialNumber}`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setOpen(null)}>
-            Cancel
+          <AlertDialogCancel
+            onClick={() => setOpen(null)}
+            className="cursor-pointer"
+          >
+            {CONSTANT.CANCEL}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={() => mutate()}>
-            Continue
+          <AlertDialogAction
+            onClick={() => mutate()}
+            className="cursor-pointer"
+          >
+            {CONSTANT.COMFIRM}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

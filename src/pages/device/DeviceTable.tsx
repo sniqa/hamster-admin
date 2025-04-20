@@ -1,12 +1,6 @@
 import { ShadcnReactTable, useShadcnReactTable } from "@/components/table";
 import { Button } from "@/components/ui/button";
-import {
-  DeleteIcon,
-  EditIcon,
-  HistoryIcon,
-  PlusIcon,
-  TrashIcon,
-} from "lucide-react";
+import { EditIcon, HistoryIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { columns } from "./DeviceColumns";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { create_device, find_device, update_device } from "@/apis/device";
@@ -21,6 +15,9 @@ import { useDeviceContext } from "./context";
 import { CreateDeviceInfo, UpdateDeviceInfo } from "@/types/device";
 import DeviceComfirmBox from "./DeviceComfirmBox";
 import DeviceHistoryTable from "./DeviceHistoryTable";
+import TableRowActionsMenu from "@/components/table-row-actions-menu";
+import TooltipButton from "@/components/tooltip-button";
+import { CONSTANT } from "@/lib/constant";
 
 const DeviceTable = ({ showOnly }: { showOnly?: boolean }) => {
   const { open, setOpen, subOpen, setSubOpen, setCurrentRow, currentRow } =
@@ -95,40 +92,46 @@ const DeviceTable = ({ showOnly }: { showOnly?: boolean }) => {
       </>
     ),
     renderRowActions: ({ row }) => (
-      <div className="flex gap-2">
-        <Button
+      <TableRowActionsMenu>
+        {/* delete */}
+        <TooltipButton
+          label={CONSTANT.DELETE}
           variant={"outline"}
-          className="size-8 cursor-pointer"
+          className="size-6 cursor-pointer"
           onClick={() => {
             setOpen("delete");
             setCurrentRow(row.original as unknown as UpdateDeviceInfo);
           }}
         >
           <TrashIcon />
-        </Button>
+        </TooltipButton>
 
-        <Button
+        {/* EDIT */}
+        <TooltipButton
+          label={CONSTANT.EDIT}
           variant={"outline"}
-          className="size-8 cursor-pointer"
+          className="size-6 cursor-pointer"
           onClick={() => {
             setOpen("update");
             setCurrentRow(row.original as unknown as UpdateDeviceInfo);
           }}
         >
           <EditIcon />
-        </Button>
+        </TooltipButton>
 
-        <Button
+        {/* HISTORY */}
+        <TooltipButton
+          label={CONSTANT.HISTORY_RECORD}
           variant={"outline"}
-          className="size-8 cursor-pointer"
+          className="size-6 cursor-pointer"
           onClick={() => {
             setOpen("history");
             setCurrentRow(row.original as unknown as UpdateDeviceInfo);
           }}
         >
           <HistoryIcon />
-        </Button>
-      </div>
+        </TooltipButton>
+      </TableRowActionsMenu>
     ),
   });
 

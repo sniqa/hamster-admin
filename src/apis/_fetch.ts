@@ -7,6 +7,7 @@ const requestInit = (data: Record<string, unknown>): RequestInit => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "",
     },
     body: JSON.stringify(data),
   };
@@ -42,7 +43,8 @@ export const postData = async <TData extends Record<string, unknown>>(
       return data;
     }
 
-    return toast(message);
+    toast(message);
+    return null;
   } catch (err) {
     toast(`${(err as Error).message}`);
   }

@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { CONSTANT } from "./utils/constant";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 export type ShadcnReactTableProps<TData extends RowData> = {
   table: ShadcnReactTableInstance<TData>;
@@ -69,37 +70,35 @@ const ShadcnReactTable = <TData extends RowData>({
   return (
     <Card
       className={cn(
-        "box-border w-full ",
+        "box-border w-full h-full overflow-hidden flex flex-col",
         fullScreen && "fixed top-0 right-0 left-0 bottom-0 z-50",
         className
       )}
       style={style}
     >
       <CardHeader className="box-border">
-        <div className="">
-          <ShadcnReactTableToolbar table={table} />
-        </div>
+        <ShadcnReactTableToolbar table={table} />
       </CardHeader>
 
-      <CardContent
-        className="overflow-auto box-border "
-        // style={{ maxHeight: `calc(100% - 1rem)` }}
-      >
-        {table.getRowModel().rows.length === 0 ? (
-          <div className="w-full flex items-center justify-center h-24 bg-gray-100 rounded-xl">
-            {CONSTANT.EMPTY}
-          </div>
-        ) : (
-          <Table
-            style={{
-              ...columnSizeVars,
-              width: `max(100%, ${table.getTotalSize()}px)`,
-            }}
-          >
-            <ShadcnReactTableHeader table={table} />
-            <ShadcnReactTableBody table={table} />
-          </Table>
-        )}
+      <CardContent style={{ maxHeight: "calc(100% - 7rem)" }}>
+        <ScrollArea className="h-full w-full">
+          {table.getRowModel().rows.length === 0 ? (
+            <div className="w-full flex items-center justify-center h-24 bg-gray-100 rounded-xl">
+              {CONSTANT.EMPTY}
+            </div>
+          ) : (
+            <Table
+              style={{
+                ...columnSizeVars,
+                width: `max(100%, ${table.getTotalSize()}px)`,
+              }}
+            >
+              <ShadcnReactTableHeader table={table} />
+              <ShadcnReactTableBody table={table} />
+            </Table>
+          )}
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </CardContent>
 
       <CardFooter className="box-border">

@@ -4,7 +4,6 @@ import {
   update_network,
 } from "@/apis/network";
 import { TreeView } from "@/components/tree-view";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,6 +12,8 @@ import NetworkDialog from "./NetworkDialog";
 import { CreateNetworkInfo, UpdateNetworkInfo } from "@/types/network";
 import { useNetworkContext } from "./context";
 import NetworkComfirmBox from "./NetworkComfirmBox";
+import TooltipButton from "@/components/tooltip-button";
+import { CONSTANT } from "@/lib/constant";
 
 const NetworkTree = () => {
   const { open, setOpen, currentRow, setCurrentRow } = useNetworkContext();
@@ -51,36 +52,41 @@ const NetworkTree = () => {
       <Card>
         <CardHeader>
           <div className="flex gap-x-2">
-            <Button
+            {/* Create Network */}
+
+            <TooltipButton
+              label={CONSTANT.CREATE_NETWORK}
               variant={"outline"}
               size={"icon"}
-              className=" cursor-pointer"
+              className="size-8 cursor-pointer"
               onClick={() => setOpen("add")}
             >
-              {/* Create */}
               <PlusIcon />
-            </Button>
+            </TooltipButton>
 
             {currentRow && (
               <>
-                <Button
+                {/* Update Network */}
+                <TooltipButton
+                  label={CONSTANT.UPDATE_NETWORK}
                   variant={"outline"}
-                  className=" cursor-pointer"
+                  className="size-8 cursor-pointer"
                   size={"icon"}
                   onClick={() => setOpen("update")}
                 >
-                  {/* Update */}
                   <EditIcon />
-                </Button>
-                <Button
+                </TooltipButton>
+
+                {/* Delete Network */}
+                <TooltipButton
+                  label={CONSTANT.DELETE_NETWORK}
                   variant={"outline"}
-                  className=" cursor-pointer"
+                  className="size-8 cursor-pointer"
                   size={"icon"}
                   onClick={() => setOpen("delete")}
                 >
-                  {/* Delete */}
                   <TrashIcon />
-                </Button>
+                </TooltipButton>
               </>
             )}
           </div>

@@ -1,0 +1,22 @@
+@header=content-type: application/json;Authorization: ""
+
+
+POST http://localhost:3000/login
+{{header}}
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+
+
+###
+POST http://localhost:3000/create-user
+{{header}}
+
+{
+    "username": "admin",
+    "password": "admin",
+    "account": "admin"
+}

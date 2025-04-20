@@ -47,8 +47,10 @@ const DeviceDialog = ({
       <Dialog {...props} onOpenChange={onClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>设备</DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogTitle>{CONSTANT.DEVICE}</DialogTitle>
+            <DialogDescription>
+              {defaultValue ? CONSTANT.UPDATE_DEVICE : CONSTANT.CREATE_DEVICE}
+            </DialogDescription>
           </DialogHeader>
 
           <DeviceForm

@@ -11,30 +11,37 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, User, Search, Settings } from "lucide-react";
+import { Home, User, Settings, MonitorSmartphone, Network } from "lucide-react";
 import { Avatar } from "../ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { CONSTANT } from "@/lib/constant";
 
 const items = [
   {
-    title: "Home",
+    title: CONSTANT.HOME,
     url: "/home",
     icon: Home,
   },
   {
-    title: "User",
+    title: CONSTANT.USER,
     url: "/user",
     icon: User,
   },
   {
-    title: "Device",
+    title: CONSTANT.DEVICE,
     url: "/device",
-    icon: Calendar,
+    icon: MonitorSmartphone,
   },
   {
-    title: "Network",
+    title: CONSTANT.NETWORK,
     url: "/network",
-    icon: Search,
+    icon: Network,
   },
   {
     title: "Settings",
@@ -54,7 +61,7 @@ const NavSidebar = () => {
           onClick={toggleSidebar}
         >
           <Avatar className={`transition-all ${open ? "size-14" : "size-8"}`}>
-            <AvatarImage src="/hamster.png" />
+            <AvatarImage src="/03.png" />
             <AvatarFallback>hamster</AvatarFallback>
           </Avatar>
           <span>Hamster</span>
@@ -62,17 +69,26 @@ const NavSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Nav</SidebarGroupLabel>
+          <SidebarGroupLabel>{CONSTANT.NAVIGATION}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <SidebarMenuButton asChild>
+                          <a href={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{item.title}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>

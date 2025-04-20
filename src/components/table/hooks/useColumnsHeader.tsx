@@ -31,11 +31,12 @@ const rowActionsColumn = <TData extends RowData>(
   cell: (cell: CellContext<TData, unknown>) => ReactNode
 ): ColumnDef<TData> => ({
   id: "actions",
-  header: "Actions",
+  // header: "Actions",
   cell,
   enableSorting: false,
   enableHiding: false,
   enableResizing: false,
+  size: 0,
 });
 
 type ColumnOptions<TData extends RowData> = {

@@ -13,4 +13,5 @@ export const ERROR = {
   ALREADY_HAVE_THIS_DEVICE: `已经拥有该设备`,
   ALREADY_HAVE_THIS_USER: "已经拥有该用户",
   ALREADY_HAVE_THIS_DEVICE_MODEL: "已经拥有该设备型号",
+  ERROR_ACCOUNT_OR_PASSWORD: "错误的账号或密码",
 };

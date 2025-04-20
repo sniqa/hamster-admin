@@ -148,6 +148,6 @@ export const find_ip_address_by_network_id = async (data: IdInfo) => {
 
   return await prisma.ipAddress.findMany({
     where: { networkId: data.id },
-    include: { network: true, devices: true },
+    include: { network: true, device: true },
   });
 };

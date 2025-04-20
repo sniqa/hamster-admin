@@ -22,7 +22,7 @@ export const update_device = async (req: UpdateDeviceInfo) =>
 
 export const find_device_history_by_id = async (req: { id: number }) => {
   if (!req.id) {
-    return;
+    return [];
   }
 
   return postData("/device-history", req);

@@ -5,12 +5,13 @@ import { CONSTANT } from "@/lib/constant";
 import FormTextarea from "@/components/form-textarea";
 import { ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { IpAddressInfo } from "@/types/network";
 
 export type IpAddressFormProps = {
   children: ReactNode;
   loading?: boolean;
-  onSubmit: (data: any) => void;
-  defaultValue?: any;
+  onSubmit: (data: IpAddressInfo) => void;
+  defaultValue?: IpAddressInfo;
 };
 
 const IpAddressForm = ({
@@ -61,7 +62,7 @@ const IpAddressForm = ({
             name="network.name"
             disabled
           />
-          <FormInput label={CONSTANT.USER} name="user" />
+          <FormInput label={CONSTANT.END_USER} name="user" />
           <FormInput label={CONSTANT.PANEL_NUMBER} name="panelNumber" />
         </div>
 

@@ -56,6 +56,11 @@ export const find_device_history_by_id = async (data: IdInfo) => {
 
   const result = await prisma.history.findMany({
     where: { deviceId: data.id },
+    orderBy: [
+      {
+        createAt: "desc", // or pass "asc" to order ascendingly
+      },
+    ],
   });
 
   return result.map((res) => ({

@@ -13,12 +13,11 @@ datasource db {
 model User {
   id       Int      @id @default(autoincrement())
   account  String   @unique
-  username String?  @default("")
-  password String?
+  username String  @default("")
+  password String @default("")
   avatar   String?  @default("")
   remark   String   @default("")
-  updateAt DateTime @updatedAt
-  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt  @default(now())  
 }
 
 model Network {
@@ -30,7 +29,7 @@ model Network {
   netmask  String   @default("")
   vlan     String   @default("")
   remark   String   @default("")
-  updateAt DateTime @updatedAt
+  updateAt DateTime @updatedAt  @default(now())  
   createAt DateTime @default(now())
 
   // tree node
@@ -49,13 +48,13 @@ model IpAddress {
   panelNumber String?  @default("")
   user        String?  @default("")
   remark      String?  @default("")
-  updateAt    DateTime @updatedAt
+  updateAt    DateTime @updatedAt  @default(now()) 
   createAt    DateTime @default(now())
 
   network   Network? @relation(fields: [networkId], references: [id])
   networkId Int?
 
-  devices Device?
+  device Device?
 }
 
 model Device {
@@ -67,7 +66,7 @@ model Device {
   user         String? @default("")
   remark       String? @default("")
 
-  updateAt DateTime @updatedAt
+  updateAt DateTime @updatedAt  @default(now())
   createAt DateTime @default(now())
 
   deviceModel   DeviceModel? @relation(fields: [deviceModelId], references: [id])
@@ -90,7 +89,7 @@ model DeviceModel {
   shelfLife       String?  @default("")
   category        String?  @default("")
   remark          String?  @default("")
-  updateAt        DateTime @updatedAt
+  updateAt        DateTime @updatedAt  @default(now())
   createAt        DateTime @default(now())
 
   devices Device[]

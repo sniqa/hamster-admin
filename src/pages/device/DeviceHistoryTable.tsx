@@ -40,7 +40,7 @@ const DeviceHistoryTable = ({ ...props }: DeviceHistoryTableProps) => {
           <SheetTitle>Device History</SheetTitle>
           <SheetDescription>device history table</SheetDescription>
         </SheetHeader>
-        <ShadcnReactTable table={table} loading={isLoading} />;
+        <ShadcnReactTable table={table} loading={isLoading} />
       </SheetContent>
     </Sheet>
   );

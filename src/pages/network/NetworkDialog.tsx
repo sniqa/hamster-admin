@@ -41,8 +41,10 @@ const NetworkDialog = ({
     <Dialog {...props} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Network</DialogTitle>
-          <DialogDescription>create network</DialogDescription>
+          <DialogTitle>{CONSTANT.NETWORK}</DialogTitle>
+          <DialogDescription>
+            {defaultValue ? CONSTANT.UPDATE_NETWORK : CONSTANT.CREATE_NETWORK}
+          </DialogDescription>
         </DialogHeader>
 
         <NetworkForm

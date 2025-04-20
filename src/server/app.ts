@@ -4,6 +4,7 @@ import Fastify, {
   FastifyReply,
   FastifyRequest,
 } from "fastify";
+import jwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import {
   create_network,
@@ -29,11 +30,25 @@ import {
   find_device_history_by_id,
   update_device,
 } from "./controllers/devices";
+import { create_user, login } from "./controllers/user";
+import { LoginInfo } from "@/types/user";
 
 const server: FastifyInstance = Fastify({});
 
 await server.register(cors, {
   origin: "*",
+});
+
+await server.register(jwt, {
+  secret: "SECRET",
+});
+
+server.addHook("onRequest", async (request) => {
+  try {
+    await request.jwtVerify();
+  } catch {
+    request.user = "";
+  }
 });
 
 const request = async (
@@ -49,6 +64,18 @@ const request = async (
     return reply.send(faildResult((err as Error).message));
   }
 };
+
+// login
+server.post("/login", async (req, reply) => {
+  try {
+    const body = req.body;
+    const userInfo = await login(body as LoginInfo);
+    const token = server.jwt.sign({ id: userInfo.id });
+    reply.send({ success: true, data: { token, user: userInfo } });
+  } catch (err) {
+    return reply.send(faildResult((err as Error).message));
+  }
+});
 
 // network
 server.get(
@@ -137,6 +164,12 @@ server.post(
 server.post(
   "/device-history",
   async (req, reply) => await request(req, reply, find_device_history_by_id)
+);
+
+// user
+server.post(
+  "/create-user",
+  async (req, reply) => await request(req, reply, create_user)
 );
 
 const start = async () => {

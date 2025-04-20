@@ -6,8 +6,10 @@ import { columns } from "./IpAddressesColumns";
 import { useNetworkContext } from "./context";
 import { EditIcon } from "lucide-react";
 import IpAddressDialog from "./IpAddressDialog";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IpAddressInfo } from "@/types/network";
+import TooltipButton from "@/components/tooltip-button";
+import { CONSTANT } from "@/lib/constant";
 
 const IpAddressesTable = ({ showOnly }: { showOnly?: boolean }) => {
   const { currentRow } = useNetworkContext();
@@ -20,6 +22,8 @@ const IpAddressesTable = ({ showOnly }: { showOnly?: boolean }) => {
       find_ip_address_by_network_id({ id: Number(currentRow?.id) }),
   });
 
+  useMemo(() => console.log(data), [data]);
+
   const table = useShadcnReactTable({
     data: data,
     columns,
@@ -27,16 +31,17 @@ const IpAddressesTable = ({ showOnly }: { showOnly?: boolean }) => {
     enableSelectRows: false,
     renderRowActions: ({ row }) => (
       <>
-        <Button
+        <TooltipButton
+          label={CONSTANT.UPDATE}
           variant={"outline"}
-          className="size-8 cursor-pointer"
+          className="cursor-pointer size-6"
           onClick={() => {
             setOpen(true);
             setCurrentIp(row.original);
           }}
         >
           <EditIcon />
-        </Button>
+        </TooltipButton>
       </>
     ),
   });
