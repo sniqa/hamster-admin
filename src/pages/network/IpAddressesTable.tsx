@@ -1,5 +1,4 @@
 import { ShadcnReactTable, useShadcnReactTable } from "@/components/table";
-import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { find_ip_address_by_network_id } from "@/apis/network";
 import { columns } from "./IpAddressesColumns";

@@ -5,6 +5,8 @@ import Table from "./pages/Table";
 import MainLayout from "./components/layout/MainLayout";
 import NetworkPage from "./pages/network/NetworkPage";
 import Login from "./pages/user/Login";
+import ChatPage from "./pages/chat/ChatPage";
+import JobsPage from "./pages/jobs/JobsPage";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,8 @@ const router = createBrowserRouter([
       },
       { path: "/device", element: <DevicePage /> },
       { path: "/network", element: <NetworkPage /> },
+      { path: "/chat", element: <ChatPage /> },
+      { path: "/jobs", element: <JobsPage /> },
     ],
   },
   { path: "/table", element: <Table /> },

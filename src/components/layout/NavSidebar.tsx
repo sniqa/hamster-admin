@@ -11,7 +11,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Home, User, Settings, MonitorSmartphone, Network } from "lucide-react";
+import {
+  Home,
+  User,
+  Settings,
+  MonitorSmartphone,
+  Network,
+  MessageCircle,
+  NotebookTextIcon,
+} from "lucide-react";
 import { Avatar } from "../ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
@@ -42,6 +50,16 @@ const items = [
     title: CONSTANT.NETWORK,
     url: "/network",
     icon: Network,
+  },
+  {
+    title: CONSTANT.CHAT,
+    url: "/chat",
+    icon: MessageCircle,
+  },
+  {
+    title: CONSTANT.JOBS,
+    url: "/jobs",
+    icon: NotebookTextIcon,
   },
   {
     title: "Settings",

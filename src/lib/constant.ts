@@ -70,4 +70,6 @@ export const CONSTANT = {
   WELECOME_BACK: "Welcome Back",
   LOGIN_TO_YOUR_ACCOUNT: "登录您的账户",
   REMEMBER_LOGIN_ACCOUNT: "记住登录状态",
+  CHAT: "信息",
+  JOBS: "Job",
 };

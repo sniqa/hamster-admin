@@ -23,8 +23,6 @@ const IpAddressForm = ({
     defaultValues: defaultValue,
   });
 
-  console.log(defaultValue);
-
   const handlerOnSubmit = () => {};
 
   if (loading) {
